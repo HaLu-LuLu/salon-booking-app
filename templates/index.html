@@ -4,35 +4,71 @@
   <meta charset="UTF-8">
   <title>美容院予約アプリ</title>
   <link rel="stylesheet" href=" {{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googlepis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https:fonts.googlepis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
   <div class="container">
-  <h1>美容院予約アプリ</h1>
+  <h1>Beauty Salon</h1>
+  <p class="sub-title">予約管理システム</p>
+
+<form method="get" style="margin-bottom: 15px;">
+  <input type="text" name="keyword" placeholder="名前で検索" value="{{ keyword or '' }}">
+  <button type="submit">検索</button>
+</form>
+
+
+  {% if error %}
+    <div class="error-massage">
+      {{ error }}
+    </div>
+  {% endif %}
 
   <form method="post">
     <p>
       <label>予約日</label>
-      <input type="date" name="date">
+      <input type="date" name="date" value="{{ form_date.date }}" required>
     </p>
 
     <p>
       <label>時間</label><br>
-      <input type="time" name="time">
+      <input type="time" name="time" value="{{ form_date.time }}" required>
     </p>
 
     <p>
       <label>お客様名</label><br>
-      <input type="text" name="name">
+      <input type="text" name="name" value="{{ form_date.name }}" required>
     </p>
 
     <p>
       <label>メニュー</label><br>
-      <input type="text" name="menu">
+      
+      <select name="menu" required>
+        <option value="">選択してください</option>
+        <option value="カット">カット</option>
+        <option value="カラー">カラー</option>
+        <option value="パーマ">パーマ</option>
+        <option value="カット+カラー">カット+カラー</option>
+        <option value="カット+パーマ">カット+パーマ</option>
+      </select>
+    </p>
+
+    <p>
+      <label>担当者</label><br>
+
+      <select name="staff" required>
+        <option value="">選択してください</option>
+        <option value="中川">中川</option>
+        <option value="境井">境井</option>
+        <option value="佐藤">佐藤</option>
+      </select>
     </p>
 
     <p>
       <label>メモ</label><br>
-      <textarea name="note"></textarea>
+      <textarea name="note">{{ form_date.note }}</textarea>
     </p>
 
     <button type="submit">予約を追加</button>
@@ -41,34 +77,235 @@
 
   <h2>今日の予約</h2>
 
-  <ul>
-  {% for r in today_reservations %}
-      <li class="card today-card">
-        📅 {{ r[0] }} ⏰ {{ r[1] }}<br>
-        👤 {{ r[2] }} / 💇 {{ r[3] }}<br>
-        📝 {{ r[4] }}
-      </li>
-  {% endfor %}
-  </ul>
+  {% if today_reservations %}
+    <ul>
+    {% for i, r in today_reservations %}
+        <li class="card today-card">
+          <div class="reservation-date">📅 {{ r[1] }} ⏰ {{ r[2] }}</div>
+          <div class="reservation-name">👤 {{ r[3] }}</div>
+          <div class="reservation-menu">✂️ {{ r[4] }}</div>
+          <div class="reservation-staff">💇‍♀️ {{ r[5] }}</div>
+          <div class="reservation-note">📝 {{ r[6] }}</div>
 
-  <h2>予約一覧</h2>
+          <div class="actions">
+          <a href="/edit/{{ r[0] }}" class="edit-btn">編集</a>
+          <a href="/delete/{{ r[0] }}" class="delete-btn" onclick="return confirm('この予約を削除しますか？')">削除</a>
+          </div>
+        </li>
+    {% endfor %}
+    </ul>
 
-  <ul>
-  {% for r in reservations %}
-      <li class="card">
-        <div class="reservation-date">📅 {{ r[0] }} ⏰ {{ r[1] }}</div>
-        <div class="reservation-name">👤 {{ r[2] }}</div>
-        <div class="reservation-menu">💇 {{ r[3] }}</div>
-        <div class="reservation-note">📝 {{ r[4] }}</div>
+    {% else %}
+    <p>今日の予約はありません</p>
+    {% endif %}
 
-        <div class="actions">
-          <a href="/edit/{{ loop.index0 }}" class="edit-btn">編集</a>
-          <a href="/delete/{{ loop.index0 }}" class="delete-btn">削除</a>
+  <h2>これからの予約</h2>
+    <ul>
+    {% for i, r in future_reservations %}
+        <li class="card future-card">
+          <div class="reservation-date">📅 {{ r[1] }} ⏰ {{ r[2] }}</div>
+          <div class="reservation-name">👤 {{ r[3] }}</div>
+          <div class="reservation-menu">✂️ {{ r[4] }}</div>
+          <div class="reservation-staff">💇‍♀️ {{ r[5] }}</div>
+          <div class="reservation-note">📝 {{ r[6] }}</div>
+
+          <div class="actions">
+          <a href="/edit/{{ r[0] }}" class="edit-btn">編集</a>
+          <a href="/delete/{{ r[0] }}" class="delete-btn" onclick="return confirm('この予約を削除しますか？')">削除</a>
+          </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+  <h2>過去の予約</h2>
+
+    <ul>
+    {% for i, r in past_reservations %}
+        <li class="card past-card">
+          <div class="reservation-date">📅 {{ r[1] }} ⏰ {{ r[2] }}</div>
+          <div class="reservation-name">👤 {{ r[3] }}</div>
+          <div class="reservation-menu">✂️ {{ r[4] }}</div>
+          <div class="reservation-staff">💇‍♀️ {{ r[5] }}</div>
+          <div class="reservation-note">📝 {{ r[6] }}</div>
+
+          <div class="actions">
+          <a href="/edit/{{ r[0] }}" class="edit-btn">編集</a>
+          <a href="/delete/{{ r[0] }}" class="delete-btn" onclick="return confirm('この予約を削除しますか？')">削除</a>
+          </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h2>売上集計</h2>
+
+    <div class="card sales-card">
+      <p>💰 総売上：{{ total_sales }}円</p>
+    </div>
+
+    <h2 class="section-title">✂ メニュー別件数</h2>
+
+    <ul>
+    {% for menu, count in menu_stats %}
+    <li>
+    {% if loop.index == 1 %}🥇
+    {% elif loop.index == 2 %}🥈
+    {% elif loop.index == 3 %}🔥と
+    {% endif %}
+    {{ menu }} : {{ count }}件
+    </li>
+    {% endfor %}
+    </ul>
+
+    <h2 class="section-title">👤 スタッフ別件数</h2>
+
+    <ul>
+    {% for staff, count in staff_stats %}
+      <li>{{ staff }} : {{ count }}件</li>
+    {% endfor %}
+    </ul>
+
+    <h2 class="section-title">¥ スタッフ別売上</h2>
+
+    <ul>
+    {% for staff, sales in staff_sales %}
+      <li>{{ staff }} : {{ sales }}円</li>
+    {% endfor %}
+    </ul>
+
+    <h2 class="section-title">📅 月別売上</h2>
+    <ul >
+    {% for month, sales in monthly_sales %}
+    <li>
+    {% if loop.index == 1 %}🥇
+    {% elif loop.index == 2 %}🥈
+    {% elif loop.index == 3 %}🥉
+    {% endif %}
+    {{ month }} : {{ sales }}円
+    </li>
+    {% endfor %}
+    </ul>
+
+    <div style="height: 250px;">
+      <canvas id="monthlySalesChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const monthlyLabels = [
+        {% for month, sales in monthly_sales %}
+          "{{ month }}",
+        {% endfor %}
+      ];
+
+      const monthlyData = [
+        {% for month, sales in monthly_sales %}
+          {{ sales }},
+        {% endfor %}
+      ];
+
+      const ctx = document.getElementById("monthlySalesChart");
+
+      new Chart(ctx, {
+          type: "bar",
+          data: {
+              labels: monthlyLabels,
+              datasets: [{
+                  label: "月別売上",
+                  data: monthlyData,
+                  backgroundColor: "#f7a8c6",
+                  borderColor: "#e85d93",
+                  borderWidth: 2,
+                  borderRadius: 8
+              }]
+          },
+          options: {
+              responsive: true,
+              plugins: {
+                  legend: {
+                      display: false
+                  }
+              },
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+    </script>
+
+    <h2 class="section-title">📅 カレンダー</h2>
+
+    <div class="calendar-header">
+      <a href="/?year={{ year }}&month={{ month - 1 }}">◀</a>
+
+      <span>{{ year }}年 {{ month }}月</span>
+
+      <a href="/?year={{ year }}&month={{ month + 1 }}">▶</a>
+    </div>
+
+    <table class="calendar">
+        <tr>
+            <th>月</th>
+            <th>火</th>
+            <th>水</th>
+            <th>木</th>
+            <th>金</th>
+            <th>土</th>
+            <th>日</th>
+        </tr>
+        {% for week in cal%}
+        <tr>
+            {% for day in week %}
+            <td>
+                {% if day != 0 %}
+                  {% set full_date = year ~ "-" ~ "%02d"|format(month) ~ "-" ~ "%02d"|format(day) %}
+                  {% set is_today = (full_date == today) %}
+                  {% set is_selected = (full_date == selected_date )%}
+
+                  <a href="/?year={{ year }}&month={{ month }}&selected_date={{ full_date }}" class="{% if is_today %}today{% endif %} {% if is_selected %}selected_day{% endif %}">
+                    {{ day }}
+
+                    {% if full_date in reservation_dates %}
+                      <span class="reserved-dot">●</span>
+                    {% endif %}
+                  </a>
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="date-search">
+      <form method="GET">
+        <input type="date" name="selected_date">
+        <button type="submit">予約を見る</button>
+      </form>
+    </div>
+    {% if selected_date %}
+    <h3>📋 {{ selected_date }} の予約</h3>
+
+    {% if selected_reservations %}
+      {% for i, r in selected_reservations %}
+        <div class="reservation-card">
+          <p><strong>時間：</strong>{{ r[2] }}</p>
+          <p><strong>お客様：</strong>{{ r[3] }}</p>
+          <p><strong>メニュー：</strong>{{ r[4] }}</p>
+          <p><strong>担当：</strong>{{ r[5] }}</p>
+
+          <div class="actions">
+            <a href="/edit/{{ r[0] }}" class="edit-btn">編集</a>
+            <a href="/delete/{{ r[0] }}" class="delete-btn" onclick="return confirm('この予約を削除しますか？')">削除</a>
+          </div>
+          <hr>
         </div>
-      </li>
-  {% endfor %}
-  </ul>
+      {% endfor %}
+    {% else %}
+      <p>予約はありません。</p>
+    {% endif %}
 
+    {% endif %}
   </div>
 </body>
 </html>

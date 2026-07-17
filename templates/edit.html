@@ -11,27 +11,42 @@
 <form method="post" action="/update/{{ index }}">
   <p>
     <label>予約日</label><br>
-    <input type="date" name="date" value="{{ reservation[0] }}">
+    <input type="date" name="date" value="{{ reservation[1] }}">
   </p>
 
   <p>
     <label>時間</label><br>
-    <input type="time" name="time" value="{{ reservation[1] }}">
+    <input type="time" name="time" value="{{ reservation[2] }}">
   </p>
 
   <p>
     <label>お客様名</label><br>
-    <input type="text" name="name" value="{{ reservation[2] }}">
+    <input type="text" name="name" value="{{ reservation[3] }}">
   </p>
 
   <p>
     <label>メニュー</label><br>
-    <input type="text" name="menu" value="{{ reservation[3] }}">
+    <select name="menu" required>
+      <option value="カット" {%if reservation[4] == "カット" %}selected{% endif %}>カット</option>
+      <option value="カラー" {%if reservation[4] == "カラー" %}selected{% endif %}>カラー</option>
+      <option value="パーマ" {%if reservation[4] == "パーマ" %}selected{% endif %}>パーマ</option>
+      <option value="カット+カラー" {%if reservation[4] == "カット+カラー" %}selected{% endif %}>カット+カラー</option>
+      <option value="カット+パーマ" {%if reservation[4] == "カット+パーマ" %}selected{% endif %}>カット+パーマ</option>
+    </select>
+  </p>
+
+  <p>
+    <label>担当者</label><br>
+    <select name="staff" required>
+      <option value="中川" {% if reservation[5] == "中川" %}selected{% endif %}>中川</option>
+      <option value="境井" {% if reservation[5] == "境井" %}selected{% endif %}>境井</option>
+      <option value="佐藤" {% if reservation[5] == "佐藤" %}selected{% endif %}>佐藤</option>
+    </select>
   </p>
 
   <p>
     <label>メモ</label><br>
-    <textarea name="note">{{ reservation[4] }}</textarea>
+    <textarea name="note">{{ reservation[6] }}</textarea>
   </p>
 
   <button type="submit">保存</button>

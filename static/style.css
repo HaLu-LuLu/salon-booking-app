@@ -1,60 +1,121 @@
 body {
-  background: #f6f7fb;
-  font-family: sans-serif;
-  padding: 16px;
+  background: url("/static/images/bg2.jpg");
+  background-size: cover;
+  background-position: 100%;
+  background-repeat: no-repeat;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  padding: 40px 0;
   margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .container {
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-h1, h2 {
-  color: #333;
+  max-width: 400px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(5px);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 h1 {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 24px;
+  font-size: 40px;
+  letter-spacing: 1px;
+  color: #222;
+  font-weight: 700;
+}
+
+h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #555;
+  font-weight: 600;
 }
 
 form, .card {
   background: white;
-  padding: 16px;
-  border-radius: 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 input, textarea, button {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px;
   margin-top: 6px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
   font-size: 14px;
 }
 
-button {
-  background: #c9a7a0;
-  color: white;
-  border: none;
-  margin-top: 12px;
+input, textarea {
+  padding: 12px 14px;
+  border: 1px solid #e7dede;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  transition: 0.2s;
 }
 
-a {
-  text-decoration: none;
-  margin-right: 10px;
-  color: #8a6f6b;
+input:focus, textarea:focus {
+  outline: none;
+  border: 1px solid #f48c8c;
+  box-shadow: 0 0 4px rgba(244, 140, 140, 0.15);
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+button {
+  width: 100%;
+  background:linear-gradient(135deg, #ff7a7a, #ffb199);
+  color: white;
+  border: none;
+  margin-top: 15px;
+  padding: 14px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(255, 122, 122, 0.4);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 122, 122, 0.5);
+}
+
+button:active {
+  transform: translateY(0px);
 }
 
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.date-search {
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 .reservation-date {
@@ -80,39 +141,270 @@ ul {
   margin-bottom: 12px;
 }
 
+.reservation-card {
+  transition: 0.2s;
+}
+
+.reservation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.reservation-card p {
+  margin: 10px;
+  line-height: 1.6;
+}
+
+.reservation-card hr {
+  border: none;
+  border-top: 1px solid #f3c5d5;
+}
+
 .actions {
+  margin-top: 15px;
   display: flex;
   gap: 10px;
 }
 
+a {
+  text-decoration: none;
+  color: #8a6f6b;
+}
+
 .edit-btn, .delete-btn {
   display: inline-block;
-  padding: 8px 14px;
-  border-radius: 10px;
+  padding: 7px 14px;
+  border-radius: 18px;
   font-size: 14px;
   text-decoration: none;
+  font-size: bold;
+  margin-right: 8px;
+  transition: 0.2s;
+  font-weight: 600;
 }
 
 .edit-btn {
-  background: #e9d8d3;
-  color: #7a5c56;
+  background: #ffe1ec;
+  color: #b83262;
+  border: 1px solid #f5b8cc;
 }
 
 .delete-btn {
-  background: #e57373;
-  color: white;
+  background: #fff0f0;
+  color: #c94a4a;
+  border: 1px solid #f2c1c1;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
 }
 
 .card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
   line-height: 1.6;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: 0.3s;
 }
 
 .card:hover {
-  opacity: 0.9;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 .today-card {
-  border: 2px solid #c9a7a0;
+  border: 2px solid #ff8c8c;
   background: #fff5f5;
+}
+
+.future-card {
+  border: 1px solid #e0e0e0;
+  background: #fff;
+}
+
+.past-card {
+  opacity: 0.5;
+  filter: grayscale(30%);
+}
+
+p {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+.error-massage {
+  background: linear-gradient(135deg, #f7a7a7, #f8c3b0);
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.search-box {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.search-box button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff8c8c, #ffb3b3);
+  color: white;
+  cursor: pointer;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 12px;
+  }
+
+  .card, .today-card, .past-card {
+    padding: 15px;
+  }
+
+  input, textarea, button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  input, textarea {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+    margin-bottom: 12px;
+  }
+
+  h1, h2 {
+    font-size: 22px;
+  }
+}
+
+.sub-title {
+  margin-top: -10px;
+  margin-bottom: 30px;
+  color: #888;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.sales-card {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.sales-card p {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+ul, li {
+  list-style: none;
+}
+
+ul {
+  padding: 0;
+  margin-left: 0;
+}
+
+.section-title {
+  color: #c2185b;
+  border-bottom: 2px dashed #f8bbd0;
+  padding-bottom: 8px;
+  margin-top: 30px;
+  font-size: 32px;
+}
+
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.calendar th, .calendar td {
+  border: 1px solid #ffd6e7;
+  width: 14%;
+  height: 55px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.calendar th {
+  background: #ffeaf3;
+  color: #d63384;
+}
+
+.calendar a {
+  display: block;
+  text-decoration: none;
+  color: #444;
+  padding: 8px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.calendar a:hover {
+  background: #ffd6e7;
+  color: #c2185b;
+  font-weight: bold;
+}
+
+.reserved-dot {
+  color: #e85d93;
+  font-size: 12px;
+  margin-left: 3px;
+}
+
+.calendar a.today {
+  background: #ff8fb3;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar a.selected-day {
+  border: 2px solid #e85d93;
+  background: #fff0f6;
+  color: #c2185b;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
 }
